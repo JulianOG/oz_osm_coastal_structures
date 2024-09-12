@@ -1,2 +1,3 @@
-# oz_osm_coastal_structures
-Crowdsourced dataset of Australian coastal structures
+# Australian Coastal Structures review
+**Status:** Under development 🚧  
+**Note:** This repository is currently under review, and its content may contain errors, typos, or incomplete features.
