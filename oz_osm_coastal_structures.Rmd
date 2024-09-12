@@ -7,6 +7,17 @@ output:
   word_document: default
 ---
 
+```{css, echo=FALSE}
+pre code {
+  display: block;
+  max-height: 6em;   /* Approximately 3 lines */
+  overflow-y: scroll;  /* Scroll vertically if content exceeds height */
+  white-space: pre-wrap; /* Prevent horizontal scrolling */
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+}```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
