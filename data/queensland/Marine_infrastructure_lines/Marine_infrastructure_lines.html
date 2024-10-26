@@ -1,0 +1,383 @@
+
+
+
+
+  
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+	
+	
+	<html lang="en">
+<head>
+</head>
+<body>
+	<div id="gptMainWrap">
+		<div id="gptBody">
+			
+			<table id="cmPlPgdPageBody" class="pageBody" cellpadding="0" cellspacing="0" summary="This table is for design purposes only.">
+<tbody>
+<tr>
+<td><span id="cmPlPgpPageBody">
+					
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  var gptMapConfig = new GptMapConfig();
+  gptMapConfig.mapServiceURL = "https://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer";
+  gptMapConfig.mapServiceType = "dynamic";
+  gptMapConfig.geometryServiceURL = "https://gisservices.information.qld.gov.au/arcgis/rest/services/Geometry/GeometryServer";
+  gptMapConfig.locatorURL = "https://gisservices.information.qld.gov.au/arcgis/rest/services/Location/QldAddressComposite/GeocodeServer";
+  gptMapConfig.locatorSingleFieldParameter = "SingleLine";
+  gptMapConfig.locatorGraphicURL = "/catalogue/catalog/images/pushpin_red.gif";
+  gptMapConfig.mapVisibleLayers = "[]";
+</script>
+
+
+<form id="mdDetails" name="mdDetails" method="post" action="/catalogue/custom/viewMetadataDetails.page;jsessionid=14ABB814CEF7556652B46C16254C96AE" class="mdDetails" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="mdDetails" value="mdDetails" />
+
+
+<script type="text/javascript">
+
+function MddMap() {
+  var _gptMap = null;
+  var _gptInpEnv = null;
+  
+  this.initialize = function initialize() {
+    var config = gptMapConfig;
+    config.mapElementId = "interactiveMap";
+    config.mapToolbarId = "mdDetails:mapToolbar";
+        
+    var elForm = mddFindForm();
+    if ((elForm != null) && (typeof(mdeEnvelopeIds) != 'undefined') && (mdeEnvelopeIds != null)) {
+      var sPfx = elForm.id+":";
+      config.inputEnvelopeXMinId = sPfx+mdeEnvelopeIds[0];
+      config.inputEnvelopeYMinId = sPfx+mdeEnvelopeIds[1];
+      config.inputEnvelopeXMaxId = sPfx+mdeEnvelopeIds[2];
+      config.inputEnvelopeYMaxId = sPfx+mdeEnvelopeIds[3];
+      var el = document.getElementById(config.inputEnvelopeXMinId);
+      if (el != null) el.value = el.innerHTML;
+      el = document.getElementById(config.inputEnvelopeYMinId);
+      if (el != null) el.value = el.innerHTML;
+      el = document.getElementById(config.inputEnvelopeXMaxId);
+      if (el != null) el.value = el.innerHTML;
+      el = document.getElementById(config.inputEnvelopeYMaxId);
+      if (el != null) el.value = el.innerHTML;
+    }
+      
+    _gptMap = new GptMap();
+    dojo.connect(_gptMap,"onMapLoaded",this,"onMapLoaded");
+
+    _gptInpEnv = new GptInputEnvelope();
+    _gptInpEnv.initialize(config,_gptMap);
+
+    _gptMap.initialize(config);
+  }
+
+  this.onMapLoaded = function() {
+      if (_gptInpEnv != null) {
+        _gptInpEnv.highlightInputEnvelope();
+        setTimeout(dojo.hitch(_gptInpEnv,"zoomToInputEnvelope"),1000);
+        _gptMap.getAgsMap().disableMapNavigation();
+        _gptMap.getAgsMap().disablePan();
+        _gptMap.getAgsMap().disableClickRecenter();
+        _gptMap.getAgsMap().disableDoubleClickZoom();
+        _gptMap.getAgsMap().disableRubberBandZoom();
+        _gptMap.getAgsMap().disableScrollWheelZoom();
+        _gptMap.getAgsMap().disableShiftDoubleClickZoom();
+        _gptMap.getAgsMap().hidePanArrows();
+        _gptMap.getAgsMap().hideZoomSlider();
+      }
+  }
+  
+  this.reposition = function reposition() {
+    if (_gptMap != null) _gptMap.reposition();
+  }
+};
+
+
+function mddFindForm(sBaseName) {
+  var elForm = null;
+  var aForms = document.getElementsByTagName("form");
+  if (aForms != null) {
+    if (sBaseName == null) sBaseName = "mdDetails";
+    for (var i=0;i<aForms.length;i++) {
+      var el = aForms[i];
+      if (el && el.id && (el.id.indexOf(sBaseName) != -1)) {
+        elForm = el;
+        break;
+      }
+    }
+  }
+  return elForm;
+};
+
+
+var mddMap = new MddMap();;
+if (typeof(dojo) != 'undefined') {
+  dojo.addOnLoad(mddMapInit);
+}
+
+function mddMapInit() {
+  var toolbar = dojo.byId("mdDetails:mapToolbar");
+  if (toolbar!=null) toolbar.style.display="none";
+  var elMap = document.getElementById("interactiveMap");
+  if (elMap != null) mddMap.initialize();
+  dojo.connect(window,"onresize",mddMap,"reposition");
+};
+
+
+function mddOnSectionClicked(sSectionId) {
+  var elForm = mddFindForm();
+  if (elForm != null) {
+    var bDisplay = true;
+    var sFolder = "/catalogue/catalog/images/";
+    var sSrc = sFolder+"section_open.gif";
+    var elImg = document.getElementById(elForm.id+":"+sSectionId+"-img");
+    if (elImg != null) {
+      if (elImg.src.indexOf("section_open.gif") != -1) {
+        sSrc = sFolder+"section_closed.gif";
+        bDisplay = false;
+      }
+      elImg.src = sSrc;
+      var elChk = document.getElementById(elForm.id+":"+sSectionId+"-chk");
+      if (elChk != null) elChk.checked = bDisplay;
+    }
+    var el = document.getElementById(elForm.id+":"+sSectionId+"-body");
+
+	if (el != null) {
+	  if (bDisplay) el.style.display = "block"; else el.style.display = "none";
+	  mddMap.reposition();
+	}      
+  }
+}
+
+</script>
+
+
+<span id="mdDetails:xsltBasedDetails"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>Marine infrastructure lines - Queensland</title><meta content="text/html; charset=UTF-8" http-equiv="Content-type"/><style type="text/css">
+                            h1{
+                                font-family:Arial, Verdana, Helvetica, sans-serif;
+                                font-weight:bold;
+                                color:#333333;
+                                font-size:140%;
+                                border-bottom:2px solid #CCCCCC;
+                            }
+                            h2{
+                                font-family:Arial, Verdana, Helvetica, sans-serif;
+                                font-weight:bold;
+                                color:#333333;
+                                font-size:120%;
+                            }
+                            h3{
+                                font-family:Arial, Verdana, Helvetica, sans-serif;
+                                font-weight:bold;
+                                color:#333333;
+                                font-size:110%;
+                            }
+                            
+                            body{
+                                font-family:Verdana, Arial, Helvetica, sans-serif;
+                                font-size:10pt;
+                                line-height:16pt;
+                                color:#333333;
+                                padding-right:10%;
+                            }
+                            
+                            em{
+                                font-family:Arial;
+                                font-style:normal;
+                                font-weight:bold;
+                            }
+                            em.rawContent{
+                                font-style:normal;
+                                font-weight:bold;
+                                font-style:italic;
+                            }
+                            
+                            div{
+                                padding-left:40px;
+                                margin-top:0;
+                                margin-bottom:0;
+                            }</style></head><body><h1>Marine infrastructure lines - Queensland</h1><h2 class="headTitle">Identification</h2><div>
+                <em>Title: </em>Marine infrastructure lines - Queensland<br/><em>Alternative title: </em>Marine infrastructure lines<br/><em>Date: </em>
+                                2022-08-04
+                             (publication) <br/>
+            <em>Related resource:</em><div><em>Identifier: </em>built.phyinf_marineinfrastructurelines<br/><em>Relationship to related resource: </em>source<br/></div></div><h2 class="headTitle">Description</h2><div><em>Abstract / Description: </em><div>This topographic dataset displays long narrow structures associated with the marine environment (e.g., breakwaters, jetties, sea walls) built along Queensland's coastline or inland waterbodies</div><em>Purpose: </em><div>This Queensland wide dataset provides generalised information for topographical mapping purposes. To provide digital data displaying long narrow structures associated with the marine environment (e.g., breakwaters, jetties, sea walls) built along Queensland's coastline or inland waterbodies. The primary objective of this dataset is to provide a cartographic portrayal of Queensland's constructed features and should be interpreted and utilised correctly. It is suitable for use in land administration, emergency management, topographic mapping and in the production of web based mapping applications.</div><em>Additional Information: </em><div>Names have been sourced from numerous locations and attributes within the data describe the source of the names.  <br/>Names have been obtained from but not limited to: <br/>- Queensland Place Names Database <br/>- Land parcel boundaries Queensland <br/>- Geoscience Australia <br/>- Maritime Industry Websites <br/>Feature Types: <br/>BOAT RAMP – A sloping construction to facilitate launching or retrieving vessels from water <br/>BREAKWATER – A structure built to break the force of waves to protect a harbour, river mouth or other waterfront facility.  <br/>DRY DOCK – An artificial basin fitted with gate or caisson into which a vessel may be floated and from which the water may be pumped out to expose the bottom of the vessel.  <br/>GROYNE – A low artificial wall-like structure constructed of timber, stone, concrete, or steel, usually extending roughly perpendicular to the shoreline or coastline, and designed to protect the shore from erosion or to trap sand.  <br/>JETTY – A public or commercial structure extending into the water to afford a berthing place for vessels or to serve as a pleasure promenade.  <br/>SEAWALL – A solid structure usually of concrete masonry or earth, built to prevent erosion or encroachment by the sea.  <br/>WHARF LINE – A narrow structure built from the land parallel to shore to provide for the berthing of vessels.  <br/>OTHER MARINE INFRASTRUCTURE LINE – A long, narrow structure associated with the marine environment and not covered by any of the above Attributes: <br/><br/>FEATURE_TYPE (Feature Type) - Unique feature type that identifies the type of feature. (options: Boat Ramp, Breakwater, Dry Dock, Groyne, Jetty, Sea Wall, Wharf Line, Other Marine Infrastructure Line) <br/>NAME (Name) - The name of the feature (if available) <br/>ALTERNATE_NAME (Alternate Name) - An alternate name of the feature if available from the Queensland Place Names Database, otherwise left blank <br/>QLD_PNDB_ID (Qld PNDB ID) - Queensland Place Names Database unique identifier <br/>ATTRIBUTE_SOURCE (Attribute Source) - The source imagery, map, or data used for attributing the feature. If the feature is named, the attribution would be the source information that the name was obtained from. If the feature is not named, the attribution is the source information which defines what the feature is e.g. breakwater <br/>ATTRIBUTE_DATE (Attribute Date) - Date of the source imagery, map, or data used for attributing the feature.  <br/>ADDITIONAL_NAMES (Additional names) - Other names of the feature. Maybe commonly known by other names or have different spelling. Multiple names can be shown, separated by a comma <br/>ADD_NAMES_SOURCE (Additional Names Source) - The source map or data that the additional names were obtained from. Multiple sources can be shown, separated by a comma. If multiple sources are shown, the written sequence will be the same as the written sequence of the names themselves. <br/>FEATURE_SOURCE (Feature Source) - The source imagery, map, or data that the spatial location of the feature was obtained from.  <br/>FEATURE_DATE (Feature Date) - Date of the source imagery, map, or data that the spatial location of the feature was obtained from.  <br/>PFI (PFI) - A Persistent Feature Identifier (PFI) is generated once for each feature at the point of creation. The value of the PFI will stay with the feature through all changes to the feature (both spatial and non-spatial) until the feature is retired.  <br/>UFI (UFI) - A Unique Feature Identifier (UFI) is generated once for each new feature at the point of creation (at this point the PFI and UFI will be the same). The value of the UFI will stay with the feature through all changes to the feature (both spatial and non-spatial) unless the feature is split into multiple other parts. If the feature is split, the separate parts will retain the original PFI but new UFI’s will be generated for the split parts.  <br/>DIMENSION_M (Dimension (m)) - The length of the feature measured in square metres (Albers projection) <br/>UPPER_SCALE (Upper Scale) - The upper scale for which the feature should be considered suitable <br/>TEXT_NOTE (Text Note) - For mapping purposes.  Additional annotation that can be shown on a map. <br/>ADD_INFORMATION (Additional Information) - A comment field (additional information) <br/><br/>This dataset is stored in an ESRI Geodatabase.  <br/>Some columns names may be shortened if downloaded in the ESRI shape format.</div><em>Language: </em>eng<br/><em>Character set: </em>unknown<br/></div><h2 class="headTitle">Topic</h2><div><em>ISO topic category codes: </em>structure<br/></div><h2 class="headTitle">Spatial Data Information</h2><div>
+                <em>Spatial representation type: </em>vector<br/>
+            
+            <em>Coordinate Reference System EPSG code: </em>EPSG:7844<br/><div><em>Title: </em>EPSG Geodetic Parameter<br/>                                Dataset<br/><em>Date: </em>
+                                        2007-07-16
+                                     (revision) <br/><em>Edition: </em>Version 6.13<br/></div>
+        </div><h2 class="headTitle">Contacts</h2><div><em>Point of contact: </em><br/><div><em>Organisation: </em>Department of Resources<br/>
+                        <em>Address:</em><br/><div>
+                                    <em>Delivery point: </em>1 William Street<br/>
+                                    <em>City: </em>Brisbane<br/>
+                                    <em>State: </em>Queensland<br/>
+                                    <em>Postcode: </em>4000<br/>
+                                    <em>Country: </em>Australia<br/>
+                                    <em>Email: </em> <a href="mailto:support@spatial-qld-support.atlassian.net">support@spatial-qld-support.atlassian.net</a> 
+                                </div>
+                    </div><em>Owner: </em><br/><div><em>Organisation: </em>Department of Resources<br/></div></div><h2 class="headTitle">Status</h2><div>
+                <em>Progress status: </em>onGoing<br/>
+            
+                        <em>Maintenance and update frequency: </em>asNeeded<br/>
+                    </div><h2 class="headTitle">Data / Resource Constraints</h2><div><em>Resource Access Level:</em>
+                         --&gt;
+                        
+                    <div>
+                        <em>Security classification (ISO 19115): </em>restricted<br/>
+                    </div><em>Copyright: </em> (as use constraint)<br/><div>&copy State of Queensland (Department of Resources) 2024</div><em>Licence: </em> (as use constraint)<br/><div>This material is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/ ">Creative Commons - Attribution 4.0 International</a> licence.<br /> <a rel="license" href="http://creativecommons.org/licenses/by/4.0/ "><img alt="Creative Commons License" title="Creative Commons - Attribution 4.0 International License" style="border: 0;" src="https://licensebuttons.net/l/by/4.0/88x31.png " /></a><br /> The Department of Resources requests attribution in the following manner:<br /> &copy State of Queensland (Department of Resources) 2024</div></div><h2 class="headTitle">Temporal and Spatial extents:</h2><div>
+                
+                    
+                        <em>Bounding box: </em><div><em>West bounding longitude: </em>138.000<br/><em>East bounding longitude: </em>155.000<br/><em>South bounding latitude: </em>-29.500<br/><em>North bounding latitude: </em>-9.000<br/></div>
+                    
+                    
+                    
+                    <em>Temporal extent: </em><div>
+                            <em> Start: </em> 2009-01-01<em> End: </em> 2022-08-04<br/>
+                        </div>
+                
+            </div><h2 class="headTitle">Data Quality</h2><div>
+            
+                <em>Data quality scope:</em><div>
+                    
+                        <em>Level: </em>dataset<br/>
+                    
+                    
+                </div>
+            
+            
+                <em>Completeness (omission):</em><div>
+                    
+                        <br/>                                The collection of feature types will be complete.<br/>                            
+                    
+                </div>
+            
+            
+                <em>Consistency (conceptual):</em><div>
+                    
+                        <br/>                                Data should be free from overshoots, undershoots, duplicate lines and agree with Topographic Data Product Description requirements with a 5% error status<br/>                            
+                    
+                </div>
+            
+            
+                <em>Positional accuracy (external, absolute):</em><div>
+                    
+                        <br/>                                The horizontal positional accuracy of the data that has been used to compile this dataset is as follows: Orthophotography +/- 1m, Satellite Imagery +/- 2.5m.<br/>                            
+                    
+                </div>
+            
+            
+                <em>Attribute accuracy (non quantitative):</em><div>
+                    
+                        <br/>                                Attribution is completed and agrees with Topographic Data Product Description requirements.<br/>                            
+                    
+                </div>
+            
+            
+            
+            
+            
+            
+                <h2 class="headTitle">History:</h2><div>
+                    <em>Lineage statement:</em><div>Initially for whole of state data capture a point is positioned in the centre of the feature, The location of features was sourced from government or community website and validated against departmental imagery (orthophotography and satellite). Other data was supplied by Geoscience Australia as part of the National Topographic Information capture initiative or from existing departmental regional mapping or topographic datasets. <br/>						<br/>						This dataset is GDA2020 Compliant. The source data, and therefore the captured features, were captured as GDA94 (horizontal only). This data has been projected to GDA2020 by using ArcGIS Pro geoprocessing tool Project geoprocessing. Using geographic transformation parameters ‘GDA94 to GDA2020 NTv2 3 Conformal’. <br/>						<br/>						The data has also been processed to remove any redundant vertices by using ArcGIS Pro’s Simplify Line geoprocessing tool. Retain critical points (Douglas-Peucker) method was used for the Simplification Algorithm and a Simplification tolerance of 0.25m. The data was further processed using an ESRI validation in a Repair Geometry geoprocessing tool and deleting any features with Null geometry.</div>
+                    
+                    
+                </div>
+            
+        </div><h2 class="headTitle">Distribution</h2><div>
+        
+            
+                <em>Format(s):</em><div>
+                    <em>Name/identifier: </em>Queensland Spatial Catalogue<br/>
+                    
+                    <em>Specification: </em>Download Service<br/>
+                    
+                        
+                                
+                            
+                                
+                                    
+                                        <em>Online resource:</em><div><em>Website: </em><a href="http://qldspatial.information.qld.gov.au/catalogue/"><small>http://qldspatial.information.qld.gov.au/catalogue/</small></a><br/></div>
+                                    
+                                
+                            
+                                <em>Ordering information:</em><div><em>Instructions: </em>Open the Queensland Spatial Catalogue (QSpatial). Select the large SEARCH button and all available records are displayed. Select one of the four filter options provided and then the further options within the filter. The resultant search is then displayed. Select your record and complete the order.<br/></div>
+                            
+                    
+                </div><br/>
+            
+            
+            
+            
+                <em>Format(s):</em><div>
+                    <em>Name/identifier: </em>downloadableData<br/>
+                    <em>Version: </em>10.0<br/>
+                    <em>Specification: </em>ESRI ArcGIS Server Geoportal Extension Content Type<br/>
+                </div><br/>
+            
+            
+                <em>Distributor:</em><div>
+                        
+                    
+                        <em>Format(s):</em><div>
+                            <em>Name/identifier: </em>From the Queensland Spatial Catalogue available as ESRI Shape file SHP, MapInfo Tab file TAB, ESRI file geodatabase FGDB, Google file KMZ, and Geopackage version 1.0, 1.1, or 1.2 file GPKG<br/>
+                            
+                        </div><br/>
+                    
+                        
+                            <em>Transfer size (megabytes): </em>1<br/>
+                            
+                                <em>Online resource:</em><div><em>Website: </em><a href="http://qldspatial.information.qld.gov.au/catalogue/custom/search.page?q=%22Marine infrastructure lines - Queensland%22"><small>http://qldspatial.information.qld.gov.au/catalogue/custom/search.page?q=%22Marine infrastructure lines - Queensland%22</small></a><br/></div>
+                            
+                            
+                        
+                    </div>
+            
+            <em>Transfer options:</em><div>
+                
+                    
+                        <em>Online resource:</em><div><em>Website: </em>
+                                <em>Function: </em>download<br/>
+                            </div>
+                    
+                
+            </div>
+        
+    <br><em>Web Service Finder:</em></br><div><em>Website: </em><a href="http://qldspatial.information.qld.gov.au/catalogue/custom/search.page?q=keywords:&quot;Marine infrastructure lines - Queensland&quot;&amp;contentTypes=liveData">QSpatial Web Service</a></div><div><em>Instructions: </em>Use the URL to search QSpatial for web services displaying or using this dataset.
+                </div></div><h2 class="headTitle">Metadata Reference Information</h2><div>
+        <em>Hierarchy level (scope of the metadata): </em>dataset<br/>
+    <em>Identifier: </em>{D90D0C6F-5643-4198-BE23-19840A503B23}<br/><em>Parent identifier: </em>{2AFF7C36-F5AD-4F55-A25C-B9728A6C5A9E}<br/><em>Metadata date stamp: </em>
+        2015-07-06
+    <br/><em>Language: </em>eng<br/>
+        <em>Character set: </em>utf8<br/>
+    <em>Metadata standard name: </em>ISO 19115:2005, ANZLIC ISO 1.1<br/><em>Metadata version name: </em>QGIS<br/></div></body></html></span><input type="hidden" name="javax.faces.ViewState" id="javax.faces.ViewState" value="4357247828483977165:-7774619496213316619" autocomplete="off" />
+</form>
+  <!--iframe class="section" src="/catalogue/rest/document?f=html&id=%7BD90D0C6F-5643-4198-BE23-19840A503B23%7D" width="100%" scrolling="no" frameborder="0"></iframe-->
+  <!--span class="note">/catalogue/rest/document?f=html&id=%7BD90D0C6F-5643-4198-BE23-19840A503B23%7D</span-->
+</span></td>
+</tr>
+</tbody>
+</table>
+
+		</div>
+	</div>
+</body>
+	</html>
+
+
+

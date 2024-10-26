@@ -1,0 +1,9 @@
+﻿CoastStruct,MrgFeature
+breakwater,"man_made:breakwater,Breakwater,BKW,OBW"
+groyne,"man_made:groyne,Groyne,GRN"
+wharf,"man_made:quay,WHF,Wharf,wharf,Wharf Line,Wharf_commercial,Wharf_noncommercial"
+seawall,"wall:seawall,barrier:retaining_wall,barrier:wall,Seawall,SWL,Sea Wall,Revetment"
+boatlaunch,"leisure:slipway,Boat Ramp,BLR,Slipway"
+jetty peir,"man_made:pier,Jetty,JET,Pier"
+boardwalk,"bridge:boardwalk,BDW"
+other,

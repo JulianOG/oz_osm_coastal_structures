@@ -1,0 +1,6 @@
+﻿VIC,https://discover.data.vic.gov.au/dataset/coastal-protection-structures
+TAS,https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=195c6de2-53e8-4792-84fa-5ab1590b2f8c
+QLD,"searched for ""Marine infrastructure lines"" on qldspatial, https://qldspatial.information.qld.gov.au/catalogue/custom/search.page"
+WA,downloaded/viewed/exported via QGIS WFS https://public-services.slip.wa.gov.au/public/services/SLIP_Public_Services/Infrastructure_and_Utilities_WFS/MapServer/WFSServer and exported as geojsons
+OSM,"https://www.openstreetmap.org/, Overpass Turbo Query: https://overpass-turbo.eu/?template=key-value&key=man_made&value=groyne#"
+smartline,"https://coastadapt.com.au/coastadapt-interactive-map,  Sharples, C., & Mount, R. E. (2009). The Australian coastal Smartline geomorphic and stability map version 1: manual and data dictionary."

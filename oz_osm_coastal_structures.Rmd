@@ -1,5 +1,5 @@
 ---
-title: "Coastal_Structures"
+title: "Mapping Australia’s Coastal Defences: Understanding the Gaps and the Need for a National Dataset"
 author: "JO"
 date: "`r Sys.Date()`"
 output:
@@ -20,14 +20,14 @@ pre code {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=10, fig.height=7)
 ```
 
-# Mapping Australia’s Coastal Defences: Understanding the Gaps and the Need for a National Dataset
+Australia's coastline is facing increasing pressures from erosion, exacerbated by rising sea levels and extreme weather events. To determine which parts of the coast are vulnerable, it’s crucial to identify areas protected by coastal structures such as sea walls, groynes, and levees.
 
-Australia’s coastline is facing increasing pressures from erosion, exacerbated by rising sea levels and extreme weather events. To determine which parts of the coast are vulnerable, it’s crucial to identify which areas are protected by coastal structures such as sea walls, groynes, and levees. Unfortunately, while few states, such as Victoria and Tasmania, offer a detailed and publicly accessible dataset of its coastal protection structures, there is currently no equivalent at a national level. A comprehensive national dataset is urgently needed to assess the risks to Australia’s coastlines and provide guidance for protecting vulnerable regions.  
-  
-  
-This is where the National Environmental Science Program (NESP) comes in. As part of its efforts, NESP knowledge brokers are reaching out to each state government to inquire about available spatial data on coastal protection structures. These datasets would ideally include vital information such as the location, height, and type of each structure. While Victoria and Tasmania’s data is readily available, it isn’t regularly updated, and it appears that in many other states, this information is either not centralised or may be held at the local government level.
+The National Environmental Science Program (NESP) is working to address this issue. As part of its efforts, NESP knowledge brokers are reaching out to state governments to inquire about available spatial data on coastal protection structures. Ideally, these datasets would include vital information such as the location, height, and type of each structure.
+
+Currently, Victoria, Tasmania, Queensland, and Western Australia provide publicly accessible datasets on their coastal protection structures. However, no equivalent exists at the national level, and similar data is not readily available for South Australia, the Northern Territory, and New South Wales. A comprehensive national dataset is urgently needed to assess the risks to Australia’s coastlines and guide efforts to protect vulnerable regions.
 
 A recent report from the [Insurance Council of Australia, titled Actions of the Sea](https://insurancecouncil.com.au/resource/actions-of-the-sea-vulnerability-study/#:~:text=The%20report%20acknowledges%20the%20growing,climate%20increases%20exposure%20and%20risk.&text=Climate%20change%20is%20driving%20rising,inundation%2C%20erosion%2C%20and%20recession.), highlights the need for consistency in how coastal defence data is gathered and shared. It recommends that state and local governments develop spatial databases of coastal defences according to a standard framework.  
 The framework should capture key details, such as:  
@@ -36,19 +36,46 @@ The framework should capture key details, such as:
 - Studies evaluating the function and hazard mitigation performance of the structures.  
 - Key design parameters, including storm return periods and allowances for future sea level rise.  
 - Construction cost and design life information.  
-  
-To help fill the current gaps in our knowledge of coastal defences, this blog delves into the potential of citizen science. One valuable resource is OpenStreetMap (OSM), where users around the world contribute geographic information. This includes mapping coastal structures in Australia, and while it is not yet comprehensive, it serves as a useful starting point for understanding where protections exist—and where they do not. Through exploring OSM contributions, we aim to inform efforts to collect standardised data and make it more accessible to coastal researchers, engineers, and managers.  
-  
-By highlighting gaps in coastal defence data, this blog complements NESP’s knowledge broker outreach. Together, these efforts will strengthen our understanding of coastal protection, helping to pinpoint the areas most vulnerable to erosion and guide future efforts to safeguard Australia’s shores.  
 
-Below, we present `R` code analysis of the publicly available data. If you scroll to the end, you'll find a interactive map comparing the national OSM and Victoria’s data, along with a **Call to Action: Get Involved!** to support our efforts to assemble a national dataset of coastal structures.
+The state-based datasets on coastal structures vary in detail and naming conventions, and a limitation is that structures are built yearly, yet these datasets aren’t regularly updated. Depending on the quality and level of detail, the data can inform applications at different scales—from first pass scientific research at the national scale to detailed first-pass analysis to inform planning policy decisions.
+
+Other national datasets, such as *Smartline*, could help fill current gaps in our datasets of coastal defences. *Smartline* is a national product that identifies whether a structure exists or not. OpenStreetMap (OSM), a collaborative project where users contribute geographic information, also includes mapping of coastal structures in Australia. Although OSM is not yet comprehensive, it serves as a useful starting point for understanding where protections exist—and where they do not. By exploring OSM contributions, we aim to inform efforts to collect standardized data and make it more accessible to coastal researchers, engineers, and managers.
+
+By collating and highlighting gaps in coastal defence data, the analysis presented complements NESP’s outreach efforts. Together, these initiatives will strengthen our understanding of coastal protection and help identify the areas most vulnerable to erosion, guiding future efforts to safeguard Australia’s shores.
+
+Below, we present `R` code analysis of the publicly available data. If you scroll to the end, you'll find a interactive map comparing the national OSM and state based data, along with a **Call to Action: Get Involved!** to support our efforts to assemble a national dataset of coastal structures.
+
+To download the processed national merged data file generated in the code below, click the following button:
+
+<a href="data/National_Coastal_structures_20241024.gpkg" download>
+  <button>Download GPKG geospatial file</button>
+</a>
+
+The file can be read into GIS software.
+
+In this research-quality dataset, a uniform naming convention is presented, lines are converted to polygons (with a width of 1m), and the data source is noted. There are important limitations in the data which are presented in the analysis, including no government-supplied data for NSW, NT, or SA, no sea walls in the TAS dataset, and the OSM data is provided by citizen scientists without extensive professional review of the labelled coastal structure type.
+
+All information and data were generated for research purposes. While every effort has been made to ensure data accuracy, the developers make no warranty (expressed or implied) regarding the accuracy, completeness, function, or capability of the code and associated data. The data is not provided as professional advice, and the user assumes any risk associated with its use, possession, or reliance on the content for decision-making. The developers expressly disclaim liability for any loss arising from the use of this code and the information contained therein. The code incorporated here is general in nature, and more detailed studies may be required for individual regions.
+
+### Identified coastal strucutre datasets
+
+The NESP knowledge brokers were able to identify the datasets in the following table. The data was downloaded to and placed in the `/data` folder in this repository along with readme files that explain the data download. In the R scripts below, the data is read in, interrogated, and a merged product is provided to inform first-pass assessments of national coastal structures.
+
+| **Dataset** | **Public dataset links** |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| VIC        | [VIC Data](https://discover.data.vic.gov.au/dataset/coastal-protection-structures) download |
+| TAS        | [TAS Data](https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=195c6de2-53e8-4792-84fa-5ab1590b2f8c) dowloaded and filtered for marine features |
+| QLD        | Searched for "Marine infrastructure lines" on qldspatial, [QLD Spatial](https://qldspatial.information.qld.gov.au/catalogue/custom/search.page) |
+| WA         | [WA Data](https://catalogue.data.wa.gov.au/dataset/coastal-infrastructure-lines) Downloaded/viewed/exported via QGIS WFS [WA WFS](https://public-services.slip.wa.gov.au/public/services/SLIP_Public_Services/Infrastructure_and_Utilities_WFS/MapServer/WFSServer) and exported as geojsons |
+| OSM        | [OpenStreetMap](https://www.openstreetmap.org/), Downloaded via Overpass Turbo Query: [Overpass Query](https://overpass-turbo.eu/?template=key-value&key=man_made&value=groyne#) |
+| Smartline  | [Smartline](https://coastadapt.com.au/coastadapt-interactive-map), Sharples, C., & Mount, R. E. (2009). The Australian coastal Smartline geomorphic and stability map version 1: manual and data dictionary. |
 
 
-### Analysis of coastal structures from OpenStreetMap (OSM)
+### Analysis of coastal structures 
 
-The sections of code below provide a working example of processes geospatial data on coastal structures sourced from OpenStreetMap (OSM).  
+The sections of code below provide a working example of processes for geospatial data on coastal structures sourced from the table above.
 
-The key-value pairs used to filter relevant OSM data include:
+From OpenStreetMap (OSM), the key-value pairs used to filter relevant OSM data include:
   
 1.&nbsp;&nbsp;&nbsp;&nbsp;**man_made = groyne:** A rigid structure built from the shore to interrupt water flow and limit sediment movement, often used to prevent beach erosion. https://wiki.openstreetmap.org/wiki/Tag:man_made%3Dgroyne  
 2. &nbsp;&nbsp;&nbsp;&nbsp;**man_made = embankment:** An artificial steep slope built along coastlines or rivers to prevent water from overflowing and flooding adjacent land. https://wiki.openstreetmap.org/wiki/Tag:man_made%3Dembankment  
@@ -63,6 +90,7 @@ The key-value pairs used to filter relevant OSM data include:
 11. &nbsp;&nbsp;&nbsp;&nbsp;**wall = seawall:** A structure built parallel to the coast to protect the shore from erosion and storm surges. https://wiki.openstreetmap.org/wiki/Tag:wall%3Dseawall  
 12. &nbsp;&nbsp;&nbsp;&nbsp;**emergency = lifeguard:** A designated spot or station for lifeguards, typically located on beaches to ensure water safety. https://wiki.openstreetmap.org/wiki/Tag:emergency%3Dlifeguard  
 13. &nbsp;&nbsp;&nbsp;&nbsp;**leisure = slipway:** A ramp leading into the water, used for launching or retrieving boats. https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dslipway  
+
 
 For each of the key-value pairs, the OSM Overpass API was used to query and extract GeoJSON files for these 13 key-value pairs:
 - Overpass Turbo Query: https://overpass-turbo.eu/?template=key-value&key=man_made&value=groyne#
@@ -90,18 +118,19 @@ suppressPackageStartupMessages(library(leaflet))
 suppressPackageStartupMessages(library(terra))
 suppressPackageStartupMessages(library(sf))
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
 
 datadir = "data/"
 ```
-
 #### The coast
 
-The coast was made via adding a 200m buffer around a 100m OSM coastline of Australia from the code in https://doi.org/10.25919/mapj-bq95 
+Coastal structures are defined here as structures being within 100 m from the shoreline. The coast was made via adding a 200m buffer around a 100m OSM coastline of Australia from the code in https://doi.org/10.25919/mapj-bq95 
 
 ```{r aus coast}
 aus_coast = vect(paste0(datadir,"OSM_AUScoastBuffer200m",".gpkg"))
 ```
-read in the OSM geoJSONs download on 29th Aug 2024
+
+Here we read in the OSM geoJSONs download on 29th Aug 2024.
 ```{r input osm files}
 OSM_geofiles = list.files(paste0(datadir,"OSM_shapes_20240829"),full.names = TRUE)
 OSM_geofiles = paste0(datadir,"OSM_shapes_20240829/export (",1:13,").geojson")
@@ -163,11 +192,11 @@ OSM_cps_coast_out = OSM_cps_coast
 values(OSM_cps_coast_out) = NA
 OSM_cps_coast_out$filetype = OSM_cps_coast$filetype
 OSM_cps_coast_out$FID = 1:length(OSM_cps_coast_out)
+
+OSM_cps_coast_out$MergeName = OSM_cps_coast$filetype
 writeVector(OSM_cps_coast_out,paste0(datadir,"OSM_coastalStructures.geojson"), filetype = "GeoJSON",overwrite=TRUE)
 
 ```
-
-#### National Summary Statisitcs assuming line strucutes have a width of 1m.
 
 Because some shapes are lines and some polygons, lines were converted to a 1m wide polygon
 
@@ -199,57 +228,97 @@ calculate_area_summary(OSM_cps_coast_out,"filetype")
 
 ```
 
-#### How does it compare to Victorian. 
+```{r}
+smartline_data = buffer(vect("data/smartline_basic_artificial_shores"),0.5)
+smartline_data$MergeName = smartline_data$erode_v
+```
+
+
+#### Comparison to the state government data. 
 The Victoria Governments has published the most complete public database of coastal structures https://discover.data.vic.gov.au/dataset/coastal-protection-structures. Here we compare the OSM shapes to the victorian Database.
 
+The Victorian datasets has some similar (Groyne and Breakwater), and some different (Seawall), label types for features compared to OSM. 
 
 ```{r}
 vicdata <- project(buffer(vect("data/victoria/COASTS"),0.5),OSM_cps_coast_out)
+vicdata$MergeName = vicdata$STRUC_TYPE
 
-calculate_area_summary(crop(OSM_cps_coast_out,ext(vicdata)),"filetype")
-
-
-```
-The Victorian datasets has some similar (Groyne and Breakwater), and some different (Seawall), label types for features. It was  
-
-
-```{r}
+#calculate_area_summary(crop(OSM_cps_coast_out,ext(vicdata)),"filetype")
 calculate_area_summary(vicdata,"STRUC_TYPE")
 
 ```
 
-THe tasmanian data was sourced from https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=195c6de2-53e8-4792-84fa-5ab1590b2f8c
 
-Here is a summary of OSM data for Tasmania
+The Tasmanian data was sourced from https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=195c6de2-53e8-4792-84fa-5ab1590b2f8c
+
+Here is a summary of the data for Tasmania
+
+Note, there are no records of sea wall in the Tasmanian dataset, E.g. the extensive rock revietment seawall in [Burnie](https://www.google.com/maps/@-41.0619778,145.9143705,3a,60y,38.07h,75.81t/data=!3m7!1e1!3m5!1sBm08_qwTv0wzbqu1AuQ6Kg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D14.190940796250743%26panoid%3DBm08_qwTv0wzbqu1AuQ6Kg%26yaw%3D38.07064762868976!7i16384!8i8192?coh=205410&entry=ttu&g_ep=EgoyMDI0MTAyMS4xIKXMDSoASAFQAw%3D%3D)
 
 ```{r}
 tas_line = vect(paste0(datadir,"tasmania/built_infrastructure_line_statewide.shp"))
 tas_poly = vect(paste0(datadir,"tasmania/built_infrastructure_poly_statewide.shp"))
 
 tasdata = project(rbind(buffer(tas_line[tas_line$INFTY1_TXT == "Marine"],0.5),tas_poly[tas_poly$INFTY1_TXT == "Marine"]),OSM_cps_coast_out)
-tasdata
-
-calculate_area_summary(crop(OSM_cps_coast_out,ext(tasdata)),"filetype")
-
-```
-
-Here is a summary of the tasmanian data https://www.thelist.tas.gov.au/app/content/data/geo-meta-data-record?detailRecordUID=195c6de2-53e8-4792-84fa-5ab1590b2f8c
-
-
-```{r}
-
+tasdata$MergeName = tasdata$INFTY2_TXT
 
 calculate_area_summary(tasdata,"INFTY2_TXT")
+
 ```
+
+The Queensland data was obtained by searching for "Marine infrastructure lines" on qldspatial https://qldspatial.information.qld.gov.au/catalogue/custom/search.page
+The files where then downloaded from an email sent by an automated API. 
+
+```{r}
+qld_lines = vect(paste0(datadir,"queensland/Marine_infrastructure_lines"))
+qlddata = buffer(project(qld_lines,rast()), 0.5)
+
+qlddata$MergeName = qlddata$feature_ty
+
+calculate_area_summary(qlddata,"feature_ty")
+
+```
+
+The Western Australian data was downloaded/viewed/exported via QGIS WFS https://public-services.slip.wa.gov.au/public/services/SLIP_Public_Services/Infrastructure_and_Utilities_WFS/MapServer/WFSServer and exported as geojsons
+
+```{r}
+wa_lines = vect(paste0(datadir,"western_australia/Coastal_Infrastructure_polygons_DOT-020.geojson"))
+wa_lines$AssumStuct = NA
+wa_lines$AssumStuct[wa_lines$structype == "BKW"] = "Breakwater"
+wa_lines$AssumStuct[wa_lines$structype == "GRN"] = "Groyne"
+wa_lines$AssumStuct[wa_lines$structype == "JET"] = "Jetty"
+wa_lines$AssumStuct[wa_lines$structype == "SWL"] = "Seawall"
+wa_lines$AssumStuct[wa_lines$structype == "WHF"] = "Wharf"
+wa_lines$AssumStuct[wa_lines$structype == "MS_Misc"] = "Other"
+wa_lines$AssumStuct[wa_lines$structype == "BDW"] = "Boardwalk"
+wa_lines$AssumStuct[wa_lines$structype == "OBW"] = "Offshore breakwater"
+wa_lines$AssumStuct[wa_lines$structype == "Buoy"] = "Buoy"
+wa_lines$AssumStuct[wa_lines$structype == "BLR"] = "Boat lifter"
+wa_lines$AssumStuct[wa_lines$structype == "CSW"] = "Causeway"
+wa_lines$AssumStuct[wa_lines$structype == "OFP"] = "Outfall Pipe"
+wa_lines$AssumStuct[wa_lines$structype == "CHN"] = "Channel"
+
+wadata = wa_lines[!is.na(wa_lines$AssumStuct)]
+
+wadata$MergeName = wadata$structype
+
+calculate_area_summary(wadata,"structype")
+
+```
+
+# Map of the coastal strucutres.
+
 
 Here we map the Victorian, Tasmanian and OSM shapes starting around Geelong in Western Port Phillip Bay. But you are free to zoom around the state or Tasmania, or country and click on a structure to find more info.
 
 ```{r leaflet}
 
 # Convert to 'sf' objects for leaflet compatibility
-vicdata_sf <- st_as_sf(vicdata)
 OSM_cps_sf <- st_as_sf(OSM_cps_coast_out)
+vicdata_sf <- st_as_sf(vicdata)
 tasdata_sf <- st_as_sf(tasdata)  
+qlddata_sf <- st_as_sf(qlddata)  
+wadata_sf <- st_as_sf(wadata)  
 
 # Define the bounding box for Geelong (approximate coordinates)
 geelong_bbox <- st_bbox(c(xmin = 144.30, ymin = -38.25, xmax = 144.45, ymax = -38.10), crs = st_crs(4326))
@@ -258,20 +327,137 @@ geelong_bbox <- st_bbox(c(xmin = 144.30, ymin = -38.25, xmax = 144.45, ymax = -3
 leaflet() %>%
   addProviderTiles("OpenStreetMap", group = "OpenStreetMap") %>%
   addProviderTiles("Esri.WorldImagery", group = "Satellite") %>%
-  addPolygons(data = vicdata_sf, color = "blue", weight = 2, opacity = 0.7, fillOpacity = 0.3,
-              popup = ~paste("Victorian Structure:", STRUC_TYPE), group = "Victorian Structures") %>%
   addPolygons(data = OSM_cps_sf, color = "red", weight = 2, opacity = 0.7, fillOpacity = 0.3,
               popup = ~paste("OSM Structure Type:", filetype), group = "OSM Structures") %>%
+  addPolygons(data = vicdata_sf, color = "blue", weight = 2, opacity = 0.7, fillOpacity = 0.3,
+              popup = ~paste("Victorian Structure:", STRUC_TYPE), group = "Victorian Structures") %>%
   addPolygons(data = tasdata_sf, color = "green", weight = 2, opacity = 0.7, fillOpacity = 0.3,
               popup = ~paste("Tasmanian Structure:", INFTY2_TXT), group = "Tasmanian Structures") %>%
+  addPolygons(data = qlddata_sf, color = "maroon", weight = 2, opacity = 0.7, fillOpacity = 0.3,
+              popup = ~paste("Queensland Structure:", feature_ty), group = "Queensland Structures") %>%
+  addPolygons(data = wadata_sf, color = "yellow", weight = 2, opacity = 0.7, fillOpacity = 0.3,
+              popup = ~paste("WA Structure:", structype), group = "WA Structures") %>%
   setView(lng = 144.35, lat = -38.15, zoom = 12) %>%
-  addLegend("topright", colors = c("blue", "red","green"), labels = c("Victorian Coastal Structures", "OSM Coastal Structures","Tasmanian Structures"), opacity = 1) %>%
+  addLegend("topright", colors = c("red","blue", "green","maroon","yellow"), labels = c("OSM Coastal Structures","Victorian Coastal Structures", "Tasmanian Structures", "Queensland Structures", "WA Structures"), opacity = 1) %>%
   addLayersControl(
     baseGroups = c("OpenStreetMap", "Satellite"),
-    overlayGroups = c("Victorian Structures", "OSM Structures","Tasmanian Structures"),
+    overlayGroups = c("OSM Structures", "Victorian Structures", "Tasmanian Structures", "Queensland Structures", "WA Structures"),
     options = layersControlOptions(collapsed = FALSE)
   )
 ```
+
+
+### Generation of a merged National dataset
+
+Below is a table detailing the naming of different structures in the different datasets. 
+```{r}
+comp_table = read.csv("data/compare_feauture_structure_names.csv")
+knitr::kable(comp_table)
+all_feat_names = c(paste(as.matrix(comp_table[,-6]))[-53],"Wharf_commercial", "Wharf_noncommercial")
+all_feat_names = all_feat_names[all_feat_names != ""]
+
+
+merge_table = read.csv("data/merge_feauture_structure_names.csv")
+nm = nrow(merge_table)
+merge_list = strsplit(merge_table[,2],",")
+feat_use = unlist(merge_list)
+feat_other = paste(sapply(all_feat_names, function(x) if(!any(x == feat_use)) x))
+feat_other = feat_other[feat_other != "NULL"][-1]
+feat_other = c(feat_other,"Dominantly artificial shores (erodibility unclassified but commonly low)") #include smartline as other because it doesn't identify structure type. 
+merge_table[8,2] = paste0(feat_other,collapse = ",")
+```
+
+The final national product was generated by merging the strcture names in the datasets using the conventions in the following table 
+
+```{r}
+
+knitr::kable(merge_table)
+
+```
+
+```{r}
+
+formatted_shapes = function(v,CoastStruct,MrgFeatures,dataset){
+  MrgFeature = strsplit(MrgFeatures,",")[[1]]
+  vs = subset(v, v$MergeName %in% MrgFeature)[,"MergeName"]
+  vs$CoastStruct = CoastStruct
+  vs$dataset = dataset
+  return(vs)
+}
+
+vicdata_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = vicdata,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "VIC")))
+tasdata_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = tasdata,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "TAS")))
+qlddata_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = qlddata,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "QLD")))
+wadata_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = wadata,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "WA")))
+osm_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = OSM_cps_coast_out,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "OSM")))
+slb_uniform = vect(lapply(1:8, function(i) formatted_shapes(v = smartline_data,CoastStruct = merge_table$CoastStruct[i],MrgFeatures = merge_table$MrgFeature[i],dataset = "Smartline")))
+
+national_uniform = vect(list(vicdata_uniform,tasdata_uniform,qlddata_uniform,wadata_uniform,osm_uniform,slb_uniform))
+
+writeVector(national_uniform,"data/National_Coastal_structures_20241024.gpkg",overwrite=TRUE)
+```
+
+Summaries the merged product.
+
+```{R}
+
+# Function to calculate area for each CoastStruct and dataset
+get_area_by_coaststruct_dataset <- function(data) {
+  # Calculate area for each feature
+  data$area <- terra::expanse(data)
+  
+  # Convert to data frame for easier manipulation
+  df <- as.data.frame(data)
+  
+  # Group by CoastStruct and dataset and summarize the total area
+  df %>%
+    group_by(CoastStruct, dataset) %>%
+    summarize(total_area = sum(area, na.rm = TRUE)) %>%
+    ungroup()
+}
+
+# Apply the function to calculate area
+area_data <- get_area_by_coaststruct_dataset(national_uniform)
+
+# Pivot the data to create a wide format with datasets as columns
+area_table <- area_data %>%
+  pivot_wider(names_from = dataset, values_from = total_area)
+
+# Set a large value for scipen to disable scientific notation
+options(scipen = 999)
+
+# Print the resulting table
+knitr::kable(area_table)
+
+```
+Summary of the OSM data in the merged product based on State Coastal Water Areas AMB 2020: the OSM column identifies international structures.
+
+```{r}
+cwa = terra::project(vect("data/Coastal_Waters_areas_(AMB2020)"),osm_uniform)
+cwa$state = c("VIC","TAS","QLD","NT","WA","SA","NSW")
+osm_uniform2 = osm_uniform
+re  = terra::relate(cwa,osm_uniform,"intersects")
+
+for(i in 1:7) osm_uniform2$dataset[which(re[i,])] = cwa$state[i]
+
+# Apply the function to calculate area
+area_data <- get_area_by_coaststruct_dataset(osm_uniform2)
+
+# Pivot the data to create a wide format with datasets as columns
+area_table <- area_data %>%
+  pivot_wider(names_from = dataset, values_from = total_area)
+
+# Set a large value for scipen to disable scientific notation
+options(scipen = 999)
+
+# Print the resulting table
+knitr::kable(area_table)
+
+```
+
+The review of coastal structure GIS spatial features across different Australian states highlights variations in naming conventions. For example, "Boatlaunch" was used to unify "Slipway" and "Boat Ramp", providing a single term to represent locations where vessels are launched. The names have been corrected to avoid abbreviations or overly simplified names, ensuring descriptive terms like "Breakwater" and "Seawall" are consistently used. Furthermore, all terms have been limited to 10 characters, with no abbreviations or three-letter words. This ensures a consistent and clear naming system that can be applied across all datasets for better integration and usability.
+
+The final summary of shapes are. 
 
 ### Where to From Here?
 

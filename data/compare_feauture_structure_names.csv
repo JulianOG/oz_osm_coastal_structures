@@ -1,0 +1,24 @@
+﻿OSM,QLD,VIC,TAS,WA,Assumed WA name
+leisure:slipway,Boat Ramp,,Boat Ramp,,
+man_made:breakwater,Breakwater,Breakwater,Breakwater,BKW,Breakwater
+,Dry Dock,,,,
+man_made:groyne,Groyne,Groyne,Groyne,GRN,Groyne
+,Jetty,,Jetty,JET,Jetty
+"wall:seawall,barrier:retaining_wall,barrier:wall",Sea Wall,Seawall,,SWL,
+,Wharf Line,"Wharf_commercial, Wharf_noncommercial",Wharf,WHF,wharf
+,,Other,,,
+,,Revetment,,,
+,,Unknown,,MS_Misc,Other
+bridge:boardwalk,,,,BDW,Boardwalk
+,,,,OBW,Offshore breakwater
+,,,Fish Farm,,
+,,,Marina,,
+,,,Navigation Buoy,,
+,,,Oyster Bed,,
+man_made:pier,,,Pier,,
+leisure:slipway,,,Slipway,BLR,Boat lifter
+man_made:quay,,,,,
+emergency:lifeguard,,,,,
+,,,,CSW,Causeway
+,,,,OFP,Outfall Pipe
+,,,,CHN,Channel
