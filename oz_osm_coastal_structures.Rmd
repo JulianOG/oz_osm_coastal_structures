@@ -23,11 +23,11 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.width=10, fig.height=7)
 ```
 
-Australia's coastline is facing increasing pressures from erosion, exacerbated by rising sea levels and extreme weather events. To determine which parts of the coast are vulnerable, it’s crucial to identify areas protected by coastal structures such as sea walls, groynes, and levees.
+Australia's coastline is facing increasing pressures from erosion, exacerbated by rising sea levels and extreme weather events. To determine which parts of the coast are vulnerable, it’s crucial to identify areas protected by coastal structures such as sea walls, groynes, and wharfs.
 
-The National Environmental Science Program (NESP) is working to address this issue. As part of its efforts, NESP knowledge brokers are reaching out to state governments to inquire about available spatial data on coastal protection structures. Ideally, these datasets would include vital information such as the location, height, and type of each structure.
+The Climate Systems Hub, through its knowledge brokers, is helping to address this issue by enquiring with state governments about available spatial data on coastal protection structures. Ideally, these datasets would include vital information such as the location, height, and type of each structure.
 
-Currently, Victoria, Tasmania, Queensland, and Western Australia provide publicly accessible datasets on their coastal protection structures. However, no equivalent exists at the national level, and similar data is not readily available for South Australia, the Northern Territory, and New South Wales. A comprehensive national dataset is urgently needed to assess the risks to Australia’s coastlines and guide efforts to protect vulnerable regions.
+Currently, Victoria, Tasmania, Queensland, and Western Australia provide standardised publicly accessible datasets on their coastal protection structures. However, this data is not readily available for South Australia, the Northern Territory, or New South and there is insufficient information regarding potential updates to these datasets. A comprehensive national dataset would help researchers and decision makers assess the risks to Australia’s coastlines and guide efforts to protect vulnerable regions.
 
 A recent report from the [Insurance Council of Australia, titled Actions of the Sea](https://insurancecouncil.com.au/resource/actions-of-the-sea-vulnerability-study/#:~:text=The%20report%20acknowledges%20the%20growing,climate%20increases%20exposure%20and%20risk.&text=Climate%20change%20is%20driving%20rising,inundation%2C%20erosion%2C%20and%20recession.), highlights the need for consistency in how coastal defence data is gathered and shared. It recommends that state and local governments develop spatial databases of coastal defences according to a standard framework.  
 The framework should capture key details, such as:  
@@ -39,11 +39,11 @@ The framework should capture key details, such as:
 
 The state-based datasets on coastal structures vary in detail and naming conventions, and a limitation is that structures are built yearly, yet these datasets aren’t regularly updated. Depending on the quality and level of detail, the data can inform applications at different scales—from first pass scientific research at the national scale to detailed first-pass analysis to inform planning policy decisions.
 
-Other national datasets, such as *Smartline*, could help fill current gaps in our datasets of coastal defences. *Smartline* is a national product that identifies whether a structure exists or not. OpenStreetMap (OSM), a collaborative project where users contribute geographic information, also includes mapping of coastal structures in Australia. Although OSM is not yet comprehensive, it serves as a useful starting point for understanding where protections exist—and where they do not. By exploring OSM contributions, we aim to inform efforts to collect standardized data and make it more accessible to coastal researchers, engineers, and managers.
+Existing national datasets, such as Smartline, are being used to help fill current gaps in our datasets of coastal defences. Smartline is a national product that identifies whether a structure exists or not. OpenStreetMap (OSM), a collaborative project where users contribute geographic information, also includes mapping of coastal structures in Australia. Although OSM is not yet comprehensive, it serves as a useful starting point for understanding where protections exist—and where they do not. By exploring OSM contributions, we aim to inform efforts to collect standardised data and make it more accessible to coastal researchers, engineers, and policy managers.
 
 By collating and highlighting gaps in coastal defence data, the analysis presented complements NESP’s outreach efforts. Together, these initiatives will strengthen our understanding of coastal protection and help identify the areas most vulnerable to erosion, guiding future efforts to safeguard Australia’s shores.
 
-Below, we present `R` code analysis of the publicly available data. If you scroll to the end, you'll find a interactive map comparing the national OSM and state based data, along with a **Call to Action: Get Involved!** to support our efforts to assemble a national dataset of coastal structures.
+Below, we present `R` code analysis of the publicly available data. If you scroll to the end, you'll find a interactive map comparing the national OSM and state based data [OR GO TO THE MAP NOW](#target-map), along with a **Call to Action: Get Involved!** to support our efforts to assemble a national dataset of coastal structures.
 
 To download the processed national merged data file generated in the code below, click the following button:
 
@@ -57,7 +57,7 @@ In this research-quality dataset, a uniform naming convention is presented, line
 
 All information and data were generated for research purposes. While every effort has been made to ensure data accuracy, the developers make no warranty (expressed or implied) regarding the accuracy, completeness, function, or capability of the code and associated data. The data is not provided as professional advice, and the user assumes any risk associated with its use, possession, or reliance on the content for decision-making. The developers expressly disclaim liability for any loss arising from the use of this code and the information contained therein. The code incorporated here is general in nature, and more detailed studies may be required for individual regions.
 
-### Identified coastal strucutre datasets
+### Identified coastal structure datasets
 
 The NESP knowledge brokers were able to identify the datasets in the following table. The data was downloaded to and placed in the `/data` folder in this repository along with readme files that explain the data download. In the R scripts below, the data is read in, interrogated, and a merged product is provided to inform first-pass assessments of national coastal structures.
 
@@ -306,8 +306,7 @@ calculate_area_summary(wadata,"structype")
 
 ```
 
-# Map of the coastal strucutres.
-
+# Map of the coastal strucutres {#target-map}
 
 Here we map the Victorian, Tasmanian and OSM shapes starting around Geelong in Western Port Phillip Bay. But you are free to zoom around the state or Tasmania, or country and click on a structure to find more info.
 
