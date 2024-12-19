@@ -1,6 +1,6 @@
 ---
 title: "Mapping Australia’s Coastal Defences: Understanding the Gaps and the Need for a National Dataset"
-author: "JO"
+author: "NESP Climate Systems Hub researchers and knowledge brokers [info@nesp2climate.com.au](info@nesp2climate.com.au)"
 date: "`r Sys.Date()`"
 output:
   html_document: default
@@ -469,7 +469,7 @@ The success of this initiative depends on the active involvement of researchers,
 - **Map coastal structures in OpenStreetMap**: If you're familiar with an area and its coastal defences, consider contributing by adding this information to OSM.
 - **Contribute your data**: Researchers and local governments are encouraged to share any datasets related to coastal protection structures. This will help build a more complete picture of the national landscape.
 - **Provide feedback**: If you notice gaps, inconsistencies, or have suggestions on how to improve the consolidation efforts, your input is invaluable.
-- **Join the conversation**: Engage with NESP knowledge brokers and coastal communities to discuss the best ways to integrate data and insights into meaningful, centralised resources.
+- **Join the conversation**: Engage with NESP Climate Systems Hub knowledge brokers [info@nesp2climate.com.au](info@nesp2climate.com.au) and coastal communities to discuss the best ways to integrate data and insights into meaningful, centralised resources.
 
 Your participation can directly influence the quality and accessibility of coastal protection data, helping to safeguard our shorelines for future generations. Let's work together to ensure Australia’s coastal regions are resilient and well-prepared for the challenges ahead.
     
