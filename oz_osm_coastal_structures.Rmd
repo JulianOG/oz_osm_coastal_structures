@@ -1,5 +1,5 @@
 ---
-title: "Mapping Australia’s Coastal Defences: Understanding the Gaps and the Need for a National Dataset"
+title: "Mapping Australia’s Coastal Defences Structures: Understanding the Gaps and the Need for a National Dataset"
 author: "NESP Climate Systems Hub researchers and knowledge brokers [info@nesp2climate.com.au](mailto:info@nesp2climate.com.au)"
 date: "`r Sys.Date()`"
 output:
@@ -53,7 +53,7 @@ To download the processed national merged data file generated in the code below,
 
 The file can be read into GIS software.
 
-Please Cite as **O'Grady, Julian; Trenham, Claire; Morris, Rebecca; & NESP Climate Systems Hub Knowledge Brokers (2024): Mapping Australia's Coastal Defences Structures: Understanding the Gaps and the Need for a National Dataset. v2. CSIRO. Service Collection.** [http://hdl.handle.net/102.100.100/660109?index=1](http://hdl.handle.net/102.100.100/660109?index=1)
+Please Cite as **O'Grady, Julian; Trenham, Claire; Morris, Rebecca; & NESP Climate Systems Hub Knowledge Brokers (2024): Mapping Australia's Coastal Defence Structures: Understanding the Gaps and the Need for a National Dataset. v2. CSIRO. Service Collection.** [http://hdl.handle.net/102.100.100/660109?index=1](http://hdl.handle.net/102.100.100/660109?index=1)
 
 In this research-quality dataset, a uniform naming convention is presented, lines are converted to polygons (with a width of 1m), and the data source is noted. There are important limitations in the data which are presented in the analysis, including no government-supplied data for NSW, NT, or SA, no sea walls in the TAS dataset, and the OSM data is provided by citizen scientists without extensive professional review of the labelled coastal structure type.
 
@@ -134,8 +134,10 @@ aus_coast = vect(paste0(datadir,"OSM_AUScoastBuffer200m",".gpkg"))
 
 Here we read in the OSM geoJSONs download on 29th Aug 2024.
 ```{r input osm files}
-OSM_geofiles = list.files(paste0(datadir,"OSM_shapes_20240829"),full.names = TRUE)
-OSM_geofiles = paste0(datadir,"OSM_shapes_20240829/export (",1:13,").geojson")
+#OSM_geofiles = list.files(paste0(datadir,"OSM_shapes_20240829"),full.names = TRUE)
+OSM_geofiles = c(paste0(datadir,"OSM_shapes_20250825/export.geojson"),
+                 paste0(datadir,"OSM_shapes_20250825/export (",c(1:7,9:13),").geojson"))
+
 
 filetxt <- c(
   "man_made:groyne",
@@ -153,6 +155,7 @@ filetxt <- c(
   "leisure:slipway"
 )
 
+cbind(filetxt,OSM_geofiles)
 #open street map coastal geojsons
 
 geoms = lapply(OSM_geofiles,function(x) sapply(svc(x),function(x) geomtype(x)))
@@ -308,7 +311,7 @@ calculate_area_summary(wadata,"structype")
 
 ```
 
-# Map of the coastal strucutres {#target-map}
+# Map of the coastal structures {#target-map}
 
 Here we map the Victorian, Tasmanian and OSM shapes starting around Geelong in Western Port Phillip Bay. But you are free to zoom around the state or Tasmania, or country and click on a structure to find more info.
 
